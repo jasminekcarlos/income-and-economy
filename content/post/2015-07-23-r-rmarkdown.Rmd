@@ -1,0 +1,199 @@
+---
+title: "How Income Affects Perception of Canada's Economic Health"
+author: "Jasmine Carlos"
+date: 2020-09-27
+bibliography: "references.bib"
+categories: ["R"]
+tags: ["R Markdown", "plot", "regression"]
+---
+
+# Loading Data
+```{r}
+library(tidyverse)
+library(dplyr)
+library(readr)
+library(devtools)
+library(cesR)
+
+```
+
+
+# Data Cleaning
+
+```{r}
+
+library(cesR)
+
+cesR::get_decon()
+
+dat <- 
+  decon %>% 
+  filter(income < 1000000)
+
+```
+
+
+# Abstract
+
+The purpose of this study is to explore how a person's income is connected to their perception of Canada's economy. Investigation was done through making histograms and calculating the median income for each respective category within the variables of econ_retro and econ_fed. In general it was found that the higher a person's income, the more optimistic their perspective on the health of the Canadian economy.
+
+# Introduction
+
+We use @citetidyverse, @citeR, @citecesR, @citedplyr, @citereadr, @citedevtools
+
+The survey data taken during the 2019 Canadian federal election contains many interesting variables but in this study a closer look was taken at the income variable and specifically, how it relates to the variables econ_retro and econ_fed. These variables correspond to questions inquiring how the survey taker feels about Canada's economy over the past year and how the policies of the federal government have contributed to Canada's economy. These were fill in the blank questions, with possible responses "better", "no different" and "worse". The goal of this study was to see if those with a certain income were more likely to give a certain response. This is something important to take into consideration when analyzing this type of data as something like income may be a bias when individuals are asked questions about the economy. This can also inform political candidates on how certain income brackets perceive the economy, an important tool when trying to garner votes. In general it was found that there was a correlation indicating that those who have a higher income and having a more optomistic perspective on the health of the economy.
+
+The investigation was done as follows. For each variable the data was split into three categories corresponding to the three possible answers. For example, for the variable econ_retro which asks about the survey taker's perspective on Canada's economy over the past year, the three possible answers were got better, stayed about the same and got worse. So the data was filtered by these three categories. From there a histogram of the income variable was created for each sub data set and the median was found. Note that median was used instead of mean as income is a highly skewed variable. When comparing the histograms and medians of each subset it was found that in general the data set that contained those who responded that the economy is better, also had the highest median income while the data set that contained those who respond that the economy is worse had the lowest median income.
+
+The paper goes through the 2 variables discussed and for each variable it also goes through the three responses, going into further detail about the specific data points found. A weakness of the study is the fact that there may be other variables in the data may be affecting income's relationship with economic outlook. In other words, one category is not mutually exclusive to another so it is entirely possible that the one variable we are studying is not isolated. There is also the fact that the method used for analysis, median, is quite simple and singular meaning it may not properly depict how the two variable are related. Something that can be done in the future to possibly mitigate this problem is instead doing a linear regression analysis. By doing this it is therefore possible to take into consideration multiple variables at once to more accurately predict and view the relationship between income and perspective of the health of the government.
+
+# Data Discussion
+
+The data used in this analysis is survey data collected by the Canadian Election study during the course of the recent 2019 Canadian Election Study. This specific set of data is the decon data set that contains many data points of interest. To be specific there are identifying variables such as citizenship, year of birth and gender. There is also information such as education level and income. Then at the end there are questions related to the survey taker's perspective on the economy of Canada, this being what this study is interested in looking at.
+
+# Graphs
+
+# "econ_retro" graphs
+
+The following are graphs corresponding to the econ_retro variable asking how the respondent feels Canada's government has performed over the past year.
+
+Got better
+```{r}
+dat_retro_better <-
+  dat %>%
+  filter (econ_retro == "Got better")
+
+plot_retro_better <-
+  dat_retro_better %>%
+  ggplot(aes(x=income)) +
+           geom_histogram() + labs(title = "Distribution of income for econ_retro response got better")
+
+plot_retro_better
+
+med_retro_better <-
+  median(dat_retro_better$income)
+
+med_retro_better
+```
+
+The main data set was taken, then the respondents who chose "got better" were filtered. A histogram of the income variable was created and the median of the income variable was also found. Naturally the income variable is highly skewed but what is of interest here is the median, which in this case is 78000.
+
+Stayed about the same
+```{r}
+dat_retro_same <-
+  dat %>%
+  filter (econ_retro == "Stayed about the same")
+
+plot_retro_same <-
+  dat_retro_same %>%
+  ggplot(aes(x=income)) +
+           geom_histogram() + labs(title = "Distribution of income for econ_retro response stayed about the same")
+
+plot_retro_same
+
+med_retro_same <-
+  median(dat_retro_same$income)
+
+med_retro_same
+```
+
+The main data set was taken, then the respondents who chose "stayed about the same" were filtered. A histogram of the income variable was created and the median of the income variable was also found. Naturally the income variable is highly skewed but what is of interest here is the median, which in this case is 75000.
+
+Got worse
+```{r}
+dat_retro_worse <-
+  dat %>%
+  filter (econ_retro == "Got worse")
+
+plot_retro_worse <-
+  dat_retro_worse %>%
+  ggplot(aes(x=income)) +
+           geom_histogram() + labs(title = "Distribution of income for econ_retro response got worse")
+
+plot_retro_worse
+
+med_retro_worse <-
+  median(dat_retro_worse$income)
+
+med_retro_worse
+```
+
+The main data set was taken, then the respondents who chose "got worse" were filtered. A histogram of the income variable was created and the median of the income variable was also found. Naturally the income variable is highly skewed but what is of interest here is the median, which in this case is 70000.
+
+Therefore it can clearly be seen that as the outlook on Canada's economy becomes more positive the income increases.
+
+# "econ_fed" Graphs
+
+The following are graphs corresponding to the econ_fed variable asking how the respondent feels the policies of the federal government affected Canada's economy.
+
+Better
+```{r}
+dat_fed_better <-
+  dat %>%
+  filter (econ_fed == "Better")
+
+plot_fed_better <-
+  dat_fed_better %>%
+  ggplot(aes(x=income)) +
+           geom_histogram() + labs(title = "Distribution of income for econ_fed response better")
+
+plot_fed_better
+
+med_fed_better <-
+  median(dat_fed_better$income)
+
+med_fed_better
+```
+
+The main data set was taken, then the respondents who chose "better" were filtered. A histogram of the income variable was created and the median of the income variable was also found. Naturally the income variable is highly skewed but what is of interest here is the median, which in this case is 75000.
+
+Not made much difference
+```{r}
+dat_fed_same <-
+  dat %>%
+  filter (econ_fed == "Not made much difference")
+
+plot_fed_same <-
+  dat_fed_same %>%
+  ggplot(aes(x=income)) +
+           geom_histogram() + labs(title = "Distribution of income for econ_fed response not made much difference")
+
+plot_fed_same
+
+med_fed_same <-
+  median(dat_fed_same$income)
+
+med_fed_same
+```
+
+The main data set was taken, then the respondents who chose "not made much difference" were filtered. A histogram of the income variable was created and the median of the income variable was also found. Naturally the income variable is highly skewed but what is of interest here is the median, which in this case is 72000.
+
+Worse
+```{r}
+dat_fed_worse <-
+  dat %>%
+  filter (econ_fed == "Worse")
+
+plot_fed_worse <-
+  dat_fed_worse %>%
+  ggplot(aes(x=income)) +
+           geom_histogram() + labs(title = "Distribution of income for econ_fed response worse")
+
+plot_fed_worse
+
+med_fed_worse <-
+  median(dat_fed_worse$income)
+
+med_fed_worse
+```
+
+The main data set was taken, then the respondents who chose "worse" were filtered. A histogram of the income variable was created and the median of the income variable was also found. Naturally the income variable is highly skewed but what is of interest here is the median, which in this case is 72000.
+
+For this variable the relationship is not as obviously as "not made much difference" and "worse" had the same median income. Though this is the case there was still a decrease in income going from "better" to "not made much difference", supporting the previous finding. 
+
+
+# Conclusion
+
+In general it can be said that there is a correlation between income and perspective on the economy which in this case, as income increases, perspective on the economy become more positive. This makes sense as when someone has a more flourishing personal monetary situation this may colour their judgment and lead them to believe that the country as a whole is also doing well. This is something important to take note of when political parties are trying to target certain individuals as it informs them as to how they are able to better speak to certain individuals belonging to a certain income bracket.
+
+# References
